@@ -1,0 +1,237 @@
+erase startup-config
+reload
+default interface range fa0/1 - 20
+
+
+R1 :
+hostname R1
+
+interface fa1/6
+description --- SRV1 ---
+no switchport
+ip address 172.16.99.14 255.255.255.240
+no shutdown
+
+interface fa1/7
+description --- SRV2 ---
+no switchport
+ip address 172.16.98.14 255.255.255.240
+no shutdown
+
+interface GigabitEthernet0/1
+description --- R2 ---
+ip address 10.10.10.2 255.255.255.252
+no shutdown
+
+interface GigabitEthernet0/0
+description --- R3 ---
+ip address 10.10.11.2 255.255.255.252
+no shutdown
+
+router rip
+version 2
+network 10.0.0.0
+network 172.16.0.0
+
+
+
+R2 :
+hostname R2
+
+interface GigabitEthernet0/1
+description --- R1 ---
+ip address 10.10.11.1 255.255.255.252
+no shutdown
+
+interface GigabitEthernet0/0
+description --- Sw1 ---
+ip address 172.16.99.29 255.255.255.240
+ip helper-address 172.16.99.1
+ip helper-address 172.16.98.1
+standby 1 ip 172.16.99.30
+standby 1 preempt
+standby 1 priority 150
+no shutdown
+
+interface GigabitEthernet0/0.10
+description --- Sw1 - VLAN10 ---               
+encapsulation dot1Q 10
+ip address 172.16.10.253 255.255.255.0
+ip helper-address 172.16.99.1
+ip helper-address 172.16.98.1
+standby 1 ip 172.16.10.254
+standby 1 preempt
+standby 1 priority 150
+no shutdown
+
+interface GigabitEthernet0/0.11 
+description --- Sw1 - VLAN11 ---              
+encapsulation dot1Q 11
+ip address 172.16.10.253 255.255.255.0
+ip helper-address 172.16.99.1
+ip helper-address 172.16.98.1
+standby 1 ip 172.16.11.254
+standby 1 preempt
+standby 1 priority 150
+no shutdown
+
+router rip
+version 2
+network 10.0.0.0
+network 172.16.0.0
+
+
+
+
+
+R3 :
+interface GigabitEthernet0/1
+description --- R1 ---
+ip address 10.10.10.1 255.255.255.252
+
+interface GigabitEthernet0/0
+description --- Sw2 ---
+ip address 172.16.99.28 255.255.255.240
+standby 1 ip 172.16.99.30
+standby 1 preempt
+
+interface GigabitEthernet0/0.10 
+description --- Sw2 - VLAN10 ---               
+encapsulation dot1Q 10
+ip address 172.16.10.252 255.255.255.0
+ip helper-address 172.16.99.1
+ip helper-address 172.16.98.1
+standby 1 ip 172.16.10.254
+standby 1 preempt
+
+interface GigabitEthernet0/0.11   
+description --- Sw2 - VLAN11 ---            
+encapsulation dot1Q 11
+ip address 172.16.10.252 255.255.255.0
+ip helper-address 172.16.99.1
+ip helper-address 172.16.98.1
+standby 1 ip 172.16.11.254
+standby 1 preempt
+
+router rip
+version 2
+network 10.0.0.0
+network 172.16.0.0
+
+
+S1
+hostname Sw1
+Spanning-tree mode rapid-pvst
+spanning-tree vlan 1-100 root primary
+vlan 10
+name KARATE
+VLAN 11
+name ATHLE
+interface vlan 1
+ip address 192.168.99.27 255.255.255.240
+
+interface fastEthernet 0/1
+description --- Sw2 ---
+switchport mode trunk
+switchport trunk allowed vlan 1-99
+
+interface fastEthernet 0/3
+description --- Sw3 ---
+switchport mode trunk
+switchport trunk allowed vlan 1-99
+
+interface fastEthernet 0/11
+description --- R2 ---
+switchport mode trunk
+switchport trunk allowed vlan 1-99
+
+interface range fastEthernet 0/1 - 2
+channel-group 1 mode active
+interface port-channel 1
+switchport mode trunk
+switchport trunk allowed vlan 1-99
+
+interface range fastEthernet 0/3 - 4
+channel-group 2 mode active
+interface port-channel 2
+switchport mode trunk
+switchport trunk allowed vlan 1-99
+
+
+S2
+hostname Sw2
+Spanning-tree mode rapid-pvst
+spanning-tree vlan 1-100 root secondary
+vlan 10
+name KARATE
+VLAN 11
+name ATHLE
+ip address 192.168.99.26 255.255.255.240
+
+interface fastEthernet0/1
+description --- Sw1 ---
+switchport mode trunk
+switchport trunk allowed vlan 1-99
+
+interface fastEthernet0/3
+description --- Sw3 ---
+switchport mode trunk
+switchport trunk allowed vlan 1-99
+
+interface fastEthernet0/11
+description --- R3 ---
+switchport mode trunk
+switchport trunk allowed vlan 1-99
+
+interface range fastEthernet 0/1 - 2
+channel-group 1 mode active
+interface port-channel 1
+switchport mode trunk
+switchport trunk allowed vlan 1-99
+
+interface range fastEthernet 0/3 - 4
+channel-group 3 mode active
+interface port-channel 3
+switchport mode trunk
+switchport trunk allowed vlan 1-99
+
+
+S3
+hostname Sw3
+Spanning-tree mode rapid-pvst
+spanning-tree vlan 1-100 root secondary
+vlan 10
+name KARATE
+VLAN 11
+name ATHLE
+ip address 192.168.99.25 255.255.255.240
+
+interface fastEthernet0/1
+description --- Sw1 ---
+switchport mode trunk
+switchport trunk allowed vlan 1-99
+
+interface fastEthernet0/3
+description --- Sw2 ---
+switchport mode trunk
+switchport trunk allowed vlan 1-99
+
+interface fastEthernet0/23
+description --- PC client ---
+switchport acces vlan 10
+
+interface range fastEthernet 0/1 - 2
+channel-group 2 mode active
+interface port-channel 2
+switchport mode trunk
+switchport trunk allowed vlan 1-99
+
+interface range fastEthernet 0/3 - 4
+channel-group 3 mode active
+interface port-channel 3
+switchport mode trunk
+switchport trunk allowed vlan 1-99
+
+
+
+
