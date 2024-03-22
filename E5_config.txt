@@ -53,7 +53,7 @@ standby 1 preempt
 standby 1 priority 150
 no shutdown
 
-interface GigabitEthernet0/0.10
+interface GigabitEthernet0/1.10
 description --- Sw1 - VLAN10 ---               
 encapsulation dot1Q 10
 ip address 172.16.10.253 255.255.255.0
@@ -64,7 +64,7 @@ standby 2 preempt
 standby 2 priority 150
 no shutdown
 
-interface GigabitEthernet0/0.11 
+interface GigabitEthernet0/1.11 
 description --- Sw1 - VLAN11 ---              
 encapsulation dot1Q 11
 ip address 172.16.11.253 255.255.255.0
