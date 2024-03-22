@@ -38,12 +38,12 @@ network 172.16.0.0
 R2 :
 hostname R2
 
-interface GigabitEthernet0/1
+interface GigabitEthernet0/0
 description --- R1 ---
-ip address 10.10.11.1 255.255.255.252
+ip address 10.10.10.1 255.255.255.252
 no shutdown
 
-interface GigabitEthernet0/0
+interface GigabitEthernet0/1
 description --- Sw1 ---
 ip address 172.16.99.29 255.255.255.240
 ip helper-address 172.16.99.1
@@ -59,20 +59,20 @@ encapsulation dot1Q 10
 ip address 172.16.10.253 255.255.255.0
 ip helper-address 172.16.99.1
 ip helper-address 172.16.98.1
-standby 1 ip 172.16.10.254
-standby 1 preempt
-standby 1 priority 150
+standby 2 ip 172.16.10.254
+standby 2 preempt
+standby 2 priority 150
 no shutdown
 
 interface GigabitEthernet0/0.11 
 description --- Sw1 - VLAN11 ---              
 encapsulation dot1Q 11
-ip address 172.16.10.253 255.255.255.0
+ip address 172.16.11.253 255.255.255.0
 ip helper-address 172.16.99.1
 ip helper-address 172.16.98.1
-standby 1 ip 172.16.11.254
-standby 1 preempt
-standby 1 priority 150
+standby 3 ip 172.16.11.254
+standby 3 preempt
+standby 3 priority 150
 no shutdown
 
 router rip
@@ -85,9 +85,11 @@ network 172.16.0.0
 
 
 R3 :
+hostname R3
+
 interface GigabitEthernet0/1
 description --- R1 ---
-ip address 10.10.10.1 255.255.255.252
+ip address 10.10.11.1 255.255.255.252
 
 interface GigabitEthernet0/0
 description --- Sw2 ---
@@ -101,17 +103,17 @@ encapsulation dot1Q 10
 ip address 172.16.10.252 255.255.255.0
 ip helper-address 172.16.99.1
 ip helper-address 172.16.98.1
-standby 1 ip 172.16.10.254
-standby 1 preempt
+standby 2 ip 172.16.10.254
+standby 2 preempt
 
 interface GigabitEthernet0/0.11   
 description --- Sw2 - VLAN11 ---            
 encapsulation dot1Q 11
-ip address 172.16.10.252 255.255.255.0
+ip address 172.16.11.252 255.255.255.0
 ip helper-address 172.16.99.1
 ip helper-address 172.16.98.1
-standby 1 ip 172.16.11.254
-standby 1 preempt
+standby 3 ip 172.16.11.254
+standby 3 preempt
 
 router rip
 version 2
