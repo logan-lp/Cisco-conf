@@ -147,6 +147,11 @@ description --- R2 ---
 switchport mode trunk
 switchport trunk allowed vlan 1-99
 
+interface fastEthernet 0/23
+description --- Client1 ---
+switchport mode access
+switchport access vlan 1-99
+
 interface range fastEthernet 0/1 - 2
 channel-group 1 mode active
 interface port-channel 1
