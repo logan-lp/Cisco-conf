@@ -37,11 +37,7 @@ switchport mode access
 switchport access vlan 10
 no shutdown
 
-interface fastEthernet 0/24
-description --- Pc logan ---
-switchport mode access
-switchport access vlan 10
-no shutdown
+
 
 
 
