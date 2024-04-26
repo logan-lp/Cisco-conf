@@ -1,0 +1,109 @@
+erase startup-config
+reload
+
+S1
+hostname Sw1
+Spanning-tree mode rapid-pvst
+spanning-tree vlan 1-100 root primary
+vlan 10
+name KARATE
+VLAN 11
+name ATHLE
+interface vlan 1
+ip address 192.168.99.27 255.255.255.240
+no shutdown
+
+interface fastEthernet 0/1
+description --- Sw2 ---
+switchport mode trunk
+switchport trunk allowed vlan 1-99
+no shutdown
+
+interface fastEthernet 0/3
+description --- Sw3 ---
+switchport mode trunk
+switchport trunk allowed vlan 1-99
+no shutdown
+
+interface fastEthernet 0/11
+description --- R2 ---
+switchport mode trunk
+switchport trunk allowed vlan 1-99
+no shutdown
+
+interface fastEthernet 0/23
+description --- Client1 ---
+switchport mode access
+switchport access vlan 10
+no shutdown
+
+interface fastEthernet 0/24
+description --- Pc logan ---
+switchport mode access
+switchport access vlan 10
+no shutdown
+
+
+
+
+
+
+S2
+hostname Sw2
+Spanning-tree mode rapid-pvst
+spanning-tree vlan 1-100 root secondary
+vlan 10
+name KARATE
+VLAN 11
+name ATHLE
+interface vlan 1
+ip address 192.168.99.26 255.255.255.240
+no shutdown
+
+interface fastEthernet0/1
+description --- Sw1 ---
+switchport mode trunk
+switchport trunk allowed vlan 1-99
+no shutdown
+
+interface fastEthernet0/3
+description --- Sw3 ---
+switchport mode trunk
+switchport trunk allowed vlan 1-99
+no shutdown
+
+interface fastEthernet0/11
+description --- R3 ---
+switchport mode trunk
+switchport trunk allowed vlan 1-99
+no shutdown
+
+
+
+
+S3
+hostname Sw3
+Spanning-tree mode rapid-pvst
+spanning-tree vlan 1-100 root secondary
+vlan 10
+name KARATE
+VLAN 11
+name ATHLE
+interface vlan 1
+ip address 192.168.99.25 255.255.255.240
+no shutdown
+
+interface fastEthernet0/1
+description --- Sw1 ---
+switchport mode trunk
+switchport trunk allowed vlan 1-99
+no shutdown
+
+interface fastEthernet0/3
+description --- Sw2 ---
+switchport mode trunk
+switchport trunk allowed vlan 1-99
+no shutdown
+
+
+wr
