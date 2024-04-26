@@ -25,11 +25,7 @@ switchport mode trunk
 switchport trunk allowed vlan 1-99
 no shutdown
 
-interface fastEthernet 0/11
-description --- R2 ---
-switchport mode trunk
-switchport trunk allowed vlan 1-99
-no shutdown
+
 
 interface fastEthernet 0/23
 description --- Client1 ---
@@ -100,6 +96,15 @@ description --- Sw2 ---
 switchport mode trunk
 switchport trunk allowed vlan 1-99
 no shutdown
+
+interface fastEthernet 0/11
+description --- R2 ---
+switchport mode trunk
+switchport trunk allowed vlan 1-99
+no shutdown
+
+
+
 
 
 wr
